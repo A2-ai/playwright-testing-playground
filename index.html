@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Testing Playground </title>
+    <style>
+        #status {
+            display: inline-block;
+            width: 100px;
+            background-color: #d7d7d7;
+            margin-left: 10px;
+        }
+
+        .info {
+            border: 1px solid #2d2d2d;
+            border-radius: 2px;
+            background-color: #c48fd4;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .section {
+            padding: 15px;
+            margin-bottom: 10px;
+            max-width: 550px;
+            border-radius: 1px;
+            border: 1px dotted #2d2d2d;
+        }
+
+        .card {
+            border: 1px solid #2d2d2d;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            width: 300px;
+            background-color: #ececec;
+            /* default background color */
+            cursor: pointer;
+            /* change cursor on hover */
+        }
+
+        .card.selected {
+            background-color: lightblue;
+            /* background color when selected */
+        }
+
+        .title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .content {
+            color: #2f2f2f;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Testing Playground </h1>
+    <section class="section">
+        <div>
+            Who am I logged in as? <span id="username"></span>
+        </div>
+    </section>
+    <section class="section">
+
+        <button id="saveSuccessBtn">Save Successfully</button>
+        <div id="status"> This will turn green 500 ms after saving</div>
+    </section>
+    <section class="section">
+        <div id="items" style="padding-top: 20px;">
+            <div data-testid="item1" class="card">
+                <div class="title">Item 1</div>
+                <div class="content">Some content about Item 1</div>
+            </div>
+
+            <div data-testid="item2" class="card">
+                <div class="title">Item 2</div>
+                <div class="content">Some content about Item 2</div>
+            </div>
+
+            <div data-testid="item3" class="card">
+                <div class="title">Item 3</div>
+                <div class="content">Some content about Item 3</div>
+            </div>
+
+        </div>
+    </section>
+    <section class="section">
+        <div class="info">
+            This input will match the output to start. While it matches, the save
+            button should be disabled. When changes are made to the input such that it
+            doesn't match the output, then the save button should be able to save
+        </div>
+        <br>
+        <input type="text" id="textInput" oninput="checkInput()" placeholder="Enter text here" value="Starting Value">
+        <button id="saveButton" onclick="saveText()">Save</button>
+        <div id="output">Starting Value</div>
+
+        <script>
+            // Function to disable or enable the save button
+            function checkInput() {
+                var textInput = document.getElementById('textInput').value;
+                var outputText = document.getElementById('output').textContent;
+
+                document.getElementById('saveButton').disabled = (textInput === outputText);
+            }
+
+            // Function to save the text and update the output
+            function saveText() {
+                var textInput = document.getElementById('textInput').value;
+                document.getElementById('output').textContent = textInput;
+                checkInput(); // Check if button should be disabled after saving
+            }
+
+            // Initial check to set the correct state of the save button
+            checkInput();
+        </script>
+    </section>
+
+
+    <script>
+        window.onload = function () {
+            fetch('/whoami')
+                .then(response => response.json())
+                .then(data => {
+                    // Display the username in the div
+                    document.getElementById('username').innerHTML = data.username;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        };
+        document.getElementById('saveSuccessBtn').addEventListener('click', function () {
+            // turn green after 500 ms to emulate a network request
+            setTimeout(function () {
+                document.getElementById('status').style.backgroundColor = '#198754';
+            }, 500);
+        });
+        document.querySelectorAll('.card').forEach(function (card) {
+            card.addEventListener('click', function () {
+                this.classList.toggle('selected');
+            });
+        });
+    </script>
+</body>
+
+</html>
