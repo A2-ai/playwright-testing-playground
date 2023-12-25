@@ -64,11 +64,17 @@
         </div>
     </section>
     <section class="section">
-
+        <div class="info"> This button emulates an action with a network request.
+            500 ms after clicking, the status div will turn green to indicate success.
+        </div>
         <button id="saveSuccessBtn">Save Successfully</button>
         <div id="status"> This will turn green 500 ms after saving</div>
     </section>
     <section class="section">
+        <div class="info"> This section has some clickable elements.
+            When clicking an item, it will turn color by applying an additional
+            'selected' class. Clicking again will remove the class.
+        </div>
         <div id="items" style="padding-top: 20px;">
             <div data-testid="item1" class="card">
                 <div class="title">Item 1</div>
