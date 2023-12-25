@@ -17,3 +17,10 @@ python3 main.py
 ```
 
 Will start on localhost:8002 by default (can change port by modifying main.py)
+
+
+## additional notes
+
+* `whoami/index.json` allows us to serve "data" from endpoints as if being hit
+by a real server. This won't work for dynamic data, but will work for endpoints
+that can be fully mocked. Using index.json pattern will properly return application/json.
