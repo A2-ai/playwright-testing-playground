@@ -109,15 +109,20 @@
             function checkInput() {
                 var textInput = document.getElementById('textInput').value;
                 var outputText = document.getElementById('output').textContent;
-
-                document.getElementById('saveButton').disabled = (textInput === outputText);
+                    document.getElementById('saveButton').disabled = (textInput === outputText);
             }
 
             // Function to save the text and update the output
             function saveText() {
-                var textInput = document.getElementById('textInput').value;
-                document.getElementById('output').textContent = textInput;
-                checkInput(); // Check if button should be disabled after saving
+                let randomTime = Math.floor(Math.random() * 900) + 100;
+                // want legit network requests so playwright can wait for network request to settle
+                // or mock it
+                fetch(`https://httpstat.us/200?sleep=${randomTime}`)
+                .then(noop => {
+                    var textInput = document.getElementById('textInput').value;
+                    document.getElementById('output').textContent = textInput;
+                    checkInput(); // Check if button should be disabled after saving
+                })
             }
 
             // Initial check to set the correct state of the save button
@@ -140,9 +145,13 @@
         };
         document.getElementById('saveSuccessBtn').addEventListener('click', function () {
             // turn green after 500 ms to emulate a network request
-            setTimeout(function () {
-                document.getElementById('status').style.backgroundColor = '#198754';
-            }, 500);
+            // get a random number between 100-1000
+            let randomTime = Math.floor(Math.random() * 900) + 100;
+            fetch(`https://httpstat.us/200?sleep=${randomTime}`)
+                .then(noop => {
+                    console.log(noop)
+                    document.getElementById('status').style.backgroundColor = '#198754';
+                })
         });
         document.querySelectorAll('.card').forEach(function (card) {
             card.addEventListener('click', function () {
